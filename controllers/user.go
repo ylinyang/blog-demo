@@ -5,7 +5,6 @@ import (
 	"github.com/ylinyang/blog-demo/logic"
 	"github.com/ylinyang/blog-demo/models"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 // SignUp 用户注册
@@ -14,23 +13,29 @@ func SignUp(c *gin.Context) {
 	u := new(models.ParamsUser)
 	if err := c.ShouldBindJSON(u); err != nil {
 		zap.L().Error("signUp with params err: ", zap.Error(err))
-		c.JSON(http.StatusOK, gin.H{
-			"code": -1,
-			"msg":  "请求参数错误",
-		})
+		Res(c, "请求参数错误")
 		return
 	}
 	// 2. 业务处理
 	if err := logic.SignUp(u); err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code": -1,
-			"msg":  err.Error(),
-		})
+		Res(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"code": 200,
-		"msg":  "success",
-	})
+	Res(c, "success", "")
+}
+
+// Login 用户登录
+func Login(c *gin.Context) {
+	u := new(models.ParamsUser)
+	if err := c.ShouldBindJSON(u); err != nil {
+		zap.L().Error("login with params err: ", zap.Error(err))
+		Res(c, "请求参数错误")
+		return
+	}
+	if err := logic.Login(u); err != nil {
+		Res(c, err.Error())
+		return
+	}
+	Res(c, "success", "")
 }

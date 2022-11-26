@@ -30,6 +30,7 @@ func SetUp() (r *gin.Engine) {
 
 	// 用户模块
 	r.POST("/signUp", controllers.SignUp)
+	r.GET("/login", controllers.Login)
 
 	return
 }
