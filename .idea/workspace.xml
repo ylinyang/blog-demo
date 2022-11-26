@@ -5,22 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="62c257f0-0290-49db-b4df-bbe4169dfca2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/config/config.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/user.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dao/mysql/mysql.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dao/redis/redis.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logger/logger.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/snowflake.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routers/app.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings/settings.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dao/mysql/user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/docs.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/swagger.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/swagger.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logic/user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/params.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/user.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web_app.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/snowflake.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/snowflake.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/routers/app.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" url="file:///usr/local/go" />
   <component name="Git.Settings">
@@ -40,6 +52,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
+    "DefaultGoTemplateProperty": "Go File",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
@@ -49,13 +62,63 @@
     "WebServerToolWindowFactoryState": "false",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/Users/ylinyang/go/src/blog-demo"
+    "last_opened_file_path": "/Users/ylinyang/go/src/blog-demo",
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
+  </component>
+  <component name="RunManager" selected="Go Build.go build github.com/ylinyang/blog-demo">
+    <configuration name="go build github.com/ylinyang/blog-demo" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="blog-demo" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/ylinyang/blog-demo" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build github.com/ylinyang/blog-demo/1" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="blog-demo" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/ylinyang/blog-demo/1" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/1/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="blog-demo" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <package value="github.com/ylinyang/blog-demo" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestGetUserID in github.com/ylinyang/blog-demo/pkg" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="blog-demo" />
+      <working_directory value="$PROJECT_DIR$/pkg" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="github.com/ylinyang/blog-demo/pkg" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestGetUserID\E$" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build github.com/ylinyang/blog-demo" />
+        <item itemvalue="Go Build.go build github.com/ylinyang/blog-demo/1" />
+        <item itemvalue="Go Build.go build main.go" />
+        <item itemvalue="Go Test.TestGetUserID in github.com/ylinyang/blog-demo/pkg" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">

@@ -1,0 +1,18 @@
+info:
+  contact: {}
+paths:
+  /signUp:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":""}'
+          schema:
+            type: string
+      summary: 用户注册
+      tags:
+      - 用户方法
+swagger: "2.0"

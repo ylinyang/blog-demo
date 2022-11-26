@@ -15,7 +15,7 @@ func Init() (err error) {
 	if err != nil {
 		return
 	}
-	snowflake.Epoch = st.UnixNano()
+	snowflake.Epoch = st.UnixNano() / 1e6
 	node, err = snowflake.NewNode(viper.GetInt64("app.machineID"))
 	return
 }

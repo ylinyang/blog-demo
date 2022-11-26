@@ -2,7 +2,7 @@ app:
   name: "web_app"
   mode: "dev"
   port: ":8090"
-  startTime: "2022-01-02"
+  startTime: "2021-12-03"
   machineID: 1
 
 log:

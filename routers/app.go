@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"github.com/ylinyang/blog-demo/controllers"
+	_ "github.com/ylinyang/blog-demo/docs"
 	"github.com/ylinyang/blog-demo/logger"
 	"net/http"
 )
@@ -14,10 +16,16 @@ func SetUp() (r *gin.Engine) {
 	//	将zap日志中间间注册到gin中
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 
+	// swagger页面
+	//r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+
 	//	 注册路由信息
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, fmt.Sprintf("%s", viper.GetString("app.name")))
 	})
+
+	// 用户模块
+	r.POST("/signUp", controllers.SignUp)
 
 	return
 }
