@@ -11,6 +11,10 @@ import (
 )
 
 func SetUp() (r *gin.Engine) {
+	// gin默认的日志为debug模式 如果设置为release模式 将在不在打印日志  但是zap的日志还是会输出到文件中
+	if viper.GetString("app.mode") == gin.ReleaseMode {
+		gin.SetMode(gin.ReleaseMode)
+	}
 	r = gin.New()
 
 	//	将zap日志中间间注册到gin中
