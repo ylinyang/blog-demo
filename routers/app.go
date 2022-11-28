@@ -7,6 +7,7 @@ import (
 	"github.com/ylinyang/blog-demo/controllers"
 	_ "github.com/ylinyang/blog-demo/docs"
 	"github.com/ylinyang/blog-demo/logger"
+	"github.com/ylinyang/blog-demo/middlewares"
 	"net/http"
 )
 
@@ -24,13 +25,24 @@ func SetUp() (r *gin.Engine) {
 	//r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	//	 注册路由信息
-	r.GET("/ping", func(c *gin.Context) {
-		c.String(http.StatusOK, fmt.Sprintf("%s", viper.GetString("app.name")))
-	})
 
+	v1 := r.Group("/api/v1")
 	// 用户模块
-	r.POST("/signUp", controllers.SignUp)
-	r.GET("/login", controllers.Login)
+	v1.POST("/signup", controllers.SignUp)
+	v1.POST("/login", controllers.Login)
+
+	//v1.GET("/refresh_token", controllers.RefreshTokenHandler)
+	v1.Use(middlewares.JWTAuthMiddleware()) // 应用JWT认证中间件
+
+	{
+		v1.GET("/community", func(c *gin.Context) {
+			c.String(http.StatusOK, fmt.Sprintf("%s", viper.GetString("app.name")))
+			fmt.Println("1")
+		})
+		v1.GET("/ping1", func(c *gin.Context) {
+			c.String(http.StatusOK, fmt.Sprintf("%s", "xxxx"))
+		})
+	}
 
 	return
 }

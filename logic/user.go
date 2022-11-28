@@ -35,13 +35,13 @@ func SignUp(u *models.ParamsUser) (err error) {
 }
 
 // Login 用户登录
-func Login(u *models.ParamsUser) (err error) {
+func Login(u *models.ParamsUser) (aToken string, rToken string, err error) {
 	user := &models.User{
 		UserName: u.UserName,
 		PassWord: fmt.Sprintf("%x", md5.Sum([]byte(u.PassWord))),
 	}
 	if err := mysql.GetUser(user); err != nil {
-		return errors.New("用户名或密码错误")
+		return "", "", errors.New("用户名或密码错误")
 	}
-	return
+	return pkg.GenToken(user.UserId)
 }
