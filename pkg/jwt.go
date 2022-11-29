@@ -3,11 +3,14 @@ package pkg
 import (
 	"errors"
 	"github.com/golang-jwt/jwt/v4"
+	"go.uber.org/zap"
 	"time"
 )
 
 // aTokenExpireDuration 过期时间
-const aTokenExpireDuration = time.Second * 2
+const aTokenExpireDuration = time.Second * 5
+
+var RTokenExpire = errors.New("rToken过期")
 
 // secret 用于加盐的字符串
 var secret = []byte("www.baidu.com")
@@ -37,7 +40,7 @@ func GenToken(userId int64) (aToken, rToken string, err error) {
 
 	// refresh token 不需要存任何自定义数据
 	rToken, err = jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
-		ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Second * 10)), // 过期时间
+		ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Second * 15)), // 过期时间
 		Issuer:    "bluebell",                                           // 签发人
 	}).SignedString(secret)
 	// 使用指定的secret签名并获得完整的编码后的字符串token
@@ -50,7 +53,6 @@ func ParseToken(tokenString string) (claims *CustomClaims, err error) {
 	var token *jwt.Token
 	claims = new(CustomClaims)
 	token, err = jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (i interface{}, err error) {
-		// 直接使用标准的Claim则可以直接使用Parse方法
 		return secret, nil
 	})
 	if err != nil {
@@ -69,15 +71,17 @@ func RefreshToken(aToken, rToken string) (newAToken, newRToken string, err error
 		// 直接使用标准的Claim则可以直接使用Parse方法
 		return secret, nil
 	}); err != nil {
-		return
+		zap.L().Error("rToken解析失败, ", zap.Error(err))
+		return "", "", RTokenExpire
 	}
 
 	// 从旧access token中解析出claims数据	解析出payload负载信息
 	var claims CustomClaims
 	_, err = jwt.ParseWithClaims(aToken, &claims, func(token *jwt.Token) (i interface{}, err error) {
-		// 直接使用标准的Claim则可以直接使用Parse方法
 		return secret, nil
 	})
+	// aToken过期
+	zap.L().Error("从旧access token中解析出claims数据解析失败, ", zap.Error(err))
 	v, _ := err.(*jwt.ValidationError)
 
 	// 当access token是过期错误 并且 refresh token没有过期时就创建一个新的access token

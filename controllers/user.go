@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/ylinyang/blog-demo/logic"
 	"github.com/ylinyang/blog-demo/models"
@@ -44,18 +43,14 @@ func Login(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"code": 200,
-		"msg":  "登录成功",
-		"data": map[string]interface{}{
-			"username":      "你大爷",
-			"access_token":  aToken,
-			"refresh_token": rToken,
-		},
+		"code":          200,
+		"message":       "登录成功",
+		"token":         aToken,
+		"refresh_token": rToken,
 	})
 }
 
 func RefreshTokenHandler(c *gin.Context) {
-	rt := c.Query("refresh_token")
 	// 客户端携带Token有三种方式 1.放在请求头 2.放在请求体 3.放在URI
 	// 这里假设Token放在Header的Authorization中，并使用Bearer开头
 	// 这里的具体实现方式要依据你的实际业务情况决定
@@ -66,16 +61,35 @@ func RefreshTokenHandler(c *gin.Context) {
 		return
 	}
 	// 按空格分割
-	parts := strings.SplitN(authHeader, " ", 2)
-	if !(len(parts) == 2 && parts[0] == "Bearer") {
-		Res(c, "Token格式不对")
-		c.Abort()
+	parts := strings.SplitN(authHeader, "|", 2)
+	//if !(len(parts) == 2 && parts[0] == "Bearer") {
+	//	Res(c, "Token格式不对")
+	//	c.Abort()
+	//	return
+	//}
+	aToken, _, err := pkg.RefreshToken(parts[0], parts[1])
+	if err == pkg.RTokenExpire {
+		zap.L().Error("RefreshToken过期, ", zap.Error(err))
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"code": 9999,
+			"msg":  "RefreshToken过期",
+		})
 		return
 	}
-	aToken, rToken, err := pkg.RefreshToken(parts[1], rt)
-	fmt.Println(err)
+	if err != nil {
+		zap.L().Error("刷新access_token失败, ", zap.Error(err))
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "刷新access_token失败",
+		})
+		return
+	}
+	zap.L().Info("新获取到的access_token是, " + aToken)
 	c.JSON(http.StatusOK, gin.H{
-		"access_token":  aToken,
-		"refresh_token": rToken,
+		"code": 200,
+		"msg":  "获取新的access_token成功",
+		"data": map[string]interface{}{
+			"token": aToken,
+		},
 	})
 }

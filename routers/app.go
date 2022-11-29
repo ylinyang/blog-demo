@@ -26,12 +26,12 @@ func SetUp() (r *gin.Engine) {
 
 	//	 注册路由信息
 
-	v1 := r.Group("/api/v1")
+	v1 := r.Group("/dev-api")
 	// 用户模块
 	v1.POST("/signup", controllers.SignUp)
 	v1.POST("/login", controllers.Login)
 
-	//v1.GET("/refresh_token", controllers.RefreshTokenHandler)
+	v1.GET("/refresh_token", controllers.RefreshTokenHandler)
 	v1.Use(middlewares.JWTAuthMiddleware()) // 应用JWT认证中间件
 
 	{
@@ -39,10 +39,13 @@ func SetUp() (r *gin.Engine) {
 			c.String(http.StatusOK, fmt.Sprintf("%s", viper.GetString("app.name")))
 			fmt.Println("1")
 		})
-		v1.GET("/ping1", func(c *gin.Context) {
-			c.String(http.StatusOK, fmt.Sprintf("%s", "xxxx"))
+		v1.GET("/getInfo", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{
+				"code":   200,
+				"name":   "你大爷",
+				"avatar": "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+			})
 		})
 	}
-
 	return
 }

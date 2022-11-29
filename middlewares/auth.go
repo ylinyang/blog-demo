@@ -2,9 +2,10 @@ package middlewares
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/ylinyang/blog-demo/pkg"
+	"go.uber.org/zap"
 	"net/http"
 	"strings"
 )
@@ -26,20 +27,32 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 			c.Abort()
 			return
 		}
-		// 按空格分割
+		// 按空格分割 由于前端直接返回的token无需处理
 		parts := strings.SplitN(authHeader, " ", 2)
-		if !(len(parts) == 2 && parts[0] == "Bearer") {
-			c.JSON(http.StatusOK, gin.H{
-				"code": -1,
-				"msg":  "请求头中auth格式有误",
-			})
-			c.Abort()
-			return
-		}
+		//fmt.Println(parts)
+		//if !(len(parts) == 2 && parts[0] == "Bearer") {
+		//	c.JSON(http.StatusOK, gin.H{
+		//		"code": -1,
+		//		"msg":  "请求头中auth格式有误",
+		//	})
+		//	c.Abort()
+		//	return
+		//}
 		// parts[1]是获取到的tokenString，我们使用之前定义好的解析JWT的函数来解析它
-		fmt.Println(parts)
-		mc, err := pkg.ParseToken(parts[1])
+		mc, err := pkg.ParseToken(parts[0])
+		// 需要对过期的token返给前端401
 		if err != nil {
+			if ve, ok := err.(*jwt.ValidationError); ok {
+				if ve.Errors&(jwt.ValidationErrorExpired) != 0 {
+					zap.L().Info("token过期")
+					c.JSON(http.StatusUnauthorized, gin.H{
+						"code": 8888,
+						"msg":  "toKen过期",
+					})
+					c.Abort()
+					return
+				}
+			}
 			c.JSON(http.StatusOK, gin.H{
 				"code": -1,
 				"msg":  "无效的Token",
